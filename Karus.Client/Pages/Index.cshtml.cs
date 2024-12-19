@@ -21,6 +21,6 @@ public class IndexModel : PageModel
 
     public async Task OnGetAsync()
     {
-        var opdrachtItems = await _opdrachtItemsService.GetOprachtItemsAsync();
+        OpdrachtItems = await _opdrachtItemsService.GetOprachtItemsAsync();
     }
 }

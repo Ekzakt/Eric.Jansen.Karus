@@ -1,38 +1,38 @@
 [
   {
-    "CardImageUri": "/karus/Data/Opdrachten/card-crisisbox.svg",
+    "CardImageFilename": "card-crisisbox.svg",
     "Name": "Crisisbox",
-    "ControllerAction": "Crisisbox",
+    "NavigationUri": "Crisisbox",
     "Description": "Mijn toolkit voor het managen van cravings en herval"
   },
   {
-    "CardImageUri": "/karus/Data/Opdrachten/card-waardenboom.svg",
+    "CardImageFilename": "card-waardenboom.svg",
     "Name": "Waardenboom",
-    "ControllerAction": "Waardenboom",
+    "NavigationUri": "Waardenboom",
     "Description": "Mijn zeven levenswaarden"
   },
   {
-    "CardImageUri": "/karus/Data/Opdrachten/card-balans.svg",
+    "CardImageFilename": "card-balans.svg",
     "Name": "Balans",
-    "ControllerAction": "Balans",
+    "NavigationUri": "Balans",
     "Description": "De voor- en nadelen van mijn alcoholgebruik"
   },
   {
-    "CardImageUri": "/karus/Data/Opdrachten/card-cirkelvanverandering.svg",
+    "CardImageFilename": "card-cirkelvanverandering.svg",
     "Name": "Cirkel van Verandering",
-    "ControllerAction": "CirkelVanVerandering",
+    "NavigationUri": "CirkelVanVerandering",
     "Description": "Het cirkelmodel van de stadia van persoonlijke verandering."
   },
   {
-    "CardImageUri": "/karus/Data/Opdrachten/card-demuur.svg",
+    "CardImageFilename": "card-demuur.svg",
     "Name": "De Muur",
-    "ControllerAction": "Muur",
+    "NavigationUri": "Muur",
     "Description": ""
   },
   {
-    "CardImageUri": "/karus/Data/Opdrachten/card-flitskaart.svg",
+    "CardImageFilename": "card-flitskaart.svg",
     "Name": "Flitskaart",
-    "ControllerAction": "Flitskaart",
+    "NavigationUri": "Flitskaart",
     "Description": "Verbreed je perspectief in een flits!"
   }
 ]

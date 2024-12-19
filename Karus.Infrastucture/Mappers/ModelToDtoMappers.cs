@@ -10,7 +10,7 @@ public static class ModelToDtoMappers
         return new OpdrachtItemDto
         {
             Name = opdrachtItem.Name,
-            CardImageUri = opdrachtItem.CardImageUri,
+            CardImageFilename = opdrachtItem.CardImageFilename,
             NavigationUri = opdrachtItem.NavigationUri,
             Description = opdrachtItem.Description
         };

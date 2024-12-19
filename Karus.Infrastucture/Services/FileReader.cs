@@ -19,7 +19,7 @@ public class FileReader : IFileReader
 
     public async Task<string?> ReadWebroothPathFileAsync(params string[] pathSegments)
     {
-        var basePath = Path.Combine(_environment.WebRootPath, "karus", "data");
+        var basePath = Path.Combine(_environment.WebRootPath, "data");
         var filePath = Path.Combine(pathSegments);
         var fullPath = Path.Combine(basePath, filePath);
 

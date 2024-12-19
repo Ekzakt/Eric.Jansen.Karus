@@ -6,7 +6,7 @@ public class OpdrachtItemDto
 {
     public string Name { get; set; }
 
-    public string CardImageUri { get; set; }
+    public string CardImageFilename { get; set; }
 
     public string NavigationUri { get; set; }
 
