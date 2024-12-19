@@ -1,0 +1,29 @@
+﻿:root {
+    --ks-k-color: #c90045;
+    --ks-a-color: #c80214;
+    --ks-r-color: #d64410;
+    --ks-u-color: #af0529;
+    --ks-s-color: #c10053;
+}
+
+$ks-advantages-bg: #5c9c59;
+$ks-advantages-color: white;
+$ks-disadvantages-bg: #dF2e38;
+$ks-disadvantages-color: white;
+$ks-waardenboomvalue-color: $ks-advantages-bg;
+$ks-waardenboomvalue-transition-color: $ks-disadvantages-bg;
+$ks-body-bg: #080000;
+$ks-body-color: var(--bs-gray-400);
+$ks-icon-fontsize: 1.5rem;
+$ks-icon-transition: transform 0.4s ease;
+$ks-img-transition-transform: transform 0.2s ease;
+$ks-img-transition-filter: filter 0.3s ease;
+$ks-img-filter: grayscale(90%);
+$ks-img-filter-none: none;
+$ks-img-transform-scale: scale(1.015);
+
+$ks-k-color: #c90045;
+$ks-a-color: #c80214;
+$ks-r-color: #d64410;
+$ks-u-color: #af0529;
+$ks-s-color: #c10053;

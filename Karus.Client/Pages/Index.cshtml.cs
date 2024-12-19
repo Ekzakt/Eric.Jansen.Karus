@@ -1,20 +1,26 @@
-using Microsoft.AspNetCore.Mvc;
+using Karus.Application.Contracts;
+using Karus.Application.Dtos;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Karus.Client.Pages
+namespace Karus.Client.Pages;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly ILogger<IndexModel> _logger;
+    private IOpdrachtItemsService _opdrachtItemsService;
+
+    public List<OpdrachtItemDto>? OpdrachtItems { get; private set; } = null;
+
+    public IndexModel(
+        ILogger<IndexModel> logger, 
+        IOpdrachtItemsService opdrachtItemsService)
     {
-        private readonly ILogger<IndexModel> _logger;
+        _logger = logger;
+        _opdrachtItemsService = opdrachtItemsService;
+    }
 
-        public IndexModel(ILogger<IndexModel> logger)
-        {
-            _logger = logger;
-        }
-
-        public void OnGet()
-        {
-
-        }
+    public async Task OnGetAsync()
+    {
+        OpdrachtItems = await _opdrachtItemsService.GetOprachtItemsAsync();
     }
 }

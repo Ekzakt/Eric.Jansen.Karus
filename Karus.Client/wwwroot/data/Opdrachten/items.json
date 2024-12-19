@@ -1,0 +1,38 @@
+[
+  {
+    "CardImageFilename": "card-crisisbox.svg",
+    "Name": "Crisisbox",
+    "NavigationUri": "Crisisbox",
+    "Description": "Mijn toolkit voor het managen van cravings en herval"
+  },
+  {
+    "CardImageFilename": "card-waardenboom.svg",
+    "Name": "Waardenboom",
+    "NavigationUri": "Waardenboom",
+    "Description": "Mijn zeven levenswaarden"
+  },
+  {
+    "CardImageFilename": "card-balans.svg",
+    "Name": "Balans",
+    "NavigationUri": "Balans",
+    "Description": "De voor- en nadelen van mijn alcoholgebruik"
+  },
+  {
+    "CardImageFilename": "card-cirkelvanverandering.svg",
+    "Name": "Cirkel van Verandering",
+    "NavigationUri": "CirkelVanVerandering",
+    "Description": "Het cirkelmodel van de stadia van persoonlijke verandering."
+  },
+  {
+    "CardImageFilename": "card-demuur.svg",
+    "Name": "De Muur",
+    "NavigationUri": "Muur",
+    "Description": ""
+  },
+  {
+    "CardImageFilename": "card-flitskaart.svg",
+    "Name": "Flitskaart",
+    "NavigationUri": "Flitskaart",
+    "Description": "Verbreed je perspectief in een flits!"
+  }
+]

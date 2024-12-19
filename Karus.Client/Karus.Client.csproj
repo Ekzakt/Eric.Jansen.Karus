@@ -6,4 +6,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Remove="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="compilerconfig.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Karus.Application\Karus.Application.csproj" />
+    <ProjectReference Include="..\Karus.Infrastucture\Karus.Infrastucture.csproj" />
+  </ItemGroup>
+
 </Project>

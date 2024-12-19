@@ -1,0 +1,45 @@
+[
+  {
+    "id": 1,
+    "name": "Vriendschap",
+    "x": 300,
+    "y": 100
+  },
+  {
+    "id": 2,
+    "name": "Betrouwbaarheid",
+    "x": 700,
+    "y": 230
+  },
+  {
+    "id": 3,
+    "name": "Innovatie",
+    "x": 200,
+    "y": 300
+  },
+  {
+    "id": 4,
+    "name": "Bescheidenheid",
+    "x": 600,
+    "y": 400
+  },
+  {
+    "id": 5,
+    "name": "Avontuur",
+    "x": 730,
+    "y": 530
+  },
+  {
+    "id": 6,
+    "name": "Vrijheid",
+    "x": 280,
+    "y": 550
+  },
+  {
+    "id": 7,
+    "name": "Loyaliteit",
+    "x": 620,
+    "y": 700
+  }
+]
+
