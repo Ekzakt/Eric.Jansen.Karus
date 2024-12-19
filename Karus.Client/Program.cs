@@ -1,3 +1,6 @@
+using Karus.Application.Contracts;
+using Karus.Infrastucture.Services;
+
 namespace Karus.Client
 {
     public class Program
@@ -6,8 +9,10 @@ namespace Karus.Client
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
             builder.Services.AddRazorPages();
+            builder.Services.AddScoped<IFileReader, FileReader>();
+            builder.Services.AddScoped<IOpdrachtItemsService, OpdrachtItemsService>();
+
 
             var app = builder.Build();
 
