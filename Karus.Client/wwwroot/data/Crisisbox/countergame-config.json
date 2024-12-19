@@ -1,0 +1,45 @@
+{
+  "maxCounts": [ 5, 10, 20, 50 ],
+  "gameTypes": [
+    {
+      "type": "people",
+      "label": "People",
+      "svg": "people.svg",
+      "colors": [
+        {
+          "name": "Red",
+          "hex": "#ff0000"
+        },
+        {
+          "name": "Blue",
+          "hex": "#00a9ff"
+        },
+        {
+          "name": "Green",
+          "hex": "#66b032"
+        }
+      ]
+    },
+    {
+      "type": "cars",
+      "label": "Cars",
+      "svg": "car.svg",
+      "colors": [
+        {
+          "name": "Green",
+          "hex": "#66b032"
+        },
+        {
+          "name": "Yellow",
+          "hex": "#ffc500"
+        }
+      ]
+    },
+    {
+      "type": "tiles",
+      "label": "Tiles",
+      "svg": "tiles.svg",
+      "colors": []
+    }
+  ]
+}
