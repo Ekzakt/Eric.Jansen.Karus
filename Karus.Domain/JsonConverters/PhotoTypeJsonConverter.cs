@@ -1,8 +1,8 @@
-﻿using Karus.Application.Enums;
+﻿using Karus.Domain.Enums;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace Karus.Infrastucture.JsonConverters;
+namespace Karus.Domain.JsonConverters;
 
 public class PhotoTypeJsonConverter : JsonConverter<PhotoType>
 {

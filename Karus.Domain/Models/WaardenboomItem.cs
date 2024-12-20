@@ -1,11 +1,9 @@
-﻿namespace Karus.Infrastucture.Models;
+﻿namespace Karus.Domain.Models;
 
 #nullable disable
 
-public class WaardenboomItem : BaseModel
+public class WaardenboomItem : BaseModel<Guid>
 {
-    public int Id { get; set; }
-
     public string Name { get; set; }
 
     public string Content { get; set; }

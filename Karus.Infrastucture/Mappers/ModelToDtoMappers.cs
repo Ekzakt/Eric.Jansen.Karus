@@ -1,5 +1,5 @@
 ﻿using Karus.Application.Dtos;
-using Karus.Infrastucture.Models;
+using Karus.Domain.Models;
 
 namespace Karus.Infrastucture.Mappers;
 

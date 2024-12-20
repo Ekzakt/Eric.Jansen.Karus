@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Karus.Application.Enums;
+namespace Karus.Domain.Enums;
 
 public enum SpotifyItemSize
 {

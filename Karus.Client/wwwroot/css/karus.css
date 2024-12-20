@@ -43,6 +43,7 @@ body {
 }
 .header .by span {
   font-size: clamp(0.75rem, 2vw, 1rem);
+  font-weight: bolder;
 }
 
 .footer {

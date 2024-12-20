@@ -1,10 +1,9 @@
-﻿namespace Karus.Infrastucture.Models;
+﻿namespace Karus.Domain.Models;
 
 #nullable disable
 
-public class BalansItem : BaseModel
+public class BalansItem : BaseModel<Guid>
 {
-    public int Id { get; set; }
 
     public string Title { get; set; }
 

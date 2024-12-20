@@ -1,4 +1,4 @@
-﻿namespace Karus.Application.Enums;
+﻿namespace Karus.Domain.Enums;
 
 /// <summary>
 /// Represents the type of a Spotify item. 
