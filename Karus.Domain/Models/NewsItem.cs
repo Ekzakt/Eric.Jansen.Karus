@@ -1,8 +1,8 @@
-﻿namespace Karus.Infrastucture.Models;
+﻿namespace Karus.Domain.Models;
 
 #nullable disable
 
-public class NewsItem : BaseModel
+public class NewsItem : BaseModel<Guid>
 {
     /// <summary>
     /// A small summary of the news item, preferably then heading of the news.

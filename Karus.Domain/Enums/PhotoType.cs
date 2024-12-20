@@ -1,4 +1,4 @@
-﻿namespace Karus.Application.Enums;
+﻿namespace Karus.Domain.Enums;
 
 public enum PhotoType
 {

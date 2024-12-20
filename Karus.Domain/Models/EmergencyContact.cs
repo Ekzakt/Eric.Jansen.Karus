@@ -1,8 +1,8 @@
-﻿namespace Karus.Infrastucture.Models;
+﻿namespace Karus.Domain.Models;
 
 #nullable disable
 
-public class EmergencyContact : BaseModel
+public class EmergencyContact : BaseModel<Guid>
 {
     public string Name { get; set; }
 

@@ -1,12 +1,12 @@
-﻿using Karus.Application.Enums;
-using Karus.Infrastucture.JsonConverters;
+﻿using Karus.Domain.Enums;
+using Karus.Domain.JsonConverters;
 using System.Text.Json.Serialization;
 
-namespace Karus.Infrastucture.Models;
+namespace Karus.Domain.Models;
 
 #nullable disable
 
-public class Photo : BaseModel
+public class Photo : BaseModel<Guid>
 {
     public string FileName { get; set; }
 

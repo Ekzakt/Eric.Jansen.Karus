@@ -1,8 +1,8 @@
-﻿namespace Karus.Infrastucture.Models;
+﻿namespace Karus.Domain.Models;
 
 #nullable disable
 
-public class Quote : BaseModel
+public class Quote : BaseModel<Guid>
 {
     public string Text { get; set; }
 

@@ -1,8 +1,8 @@
-﻿namespace Karus.Infrastucture.Models;
+﻿namespace Karus.Domain.Models;
 
 #nullable disable
 
-public class OpdrachtItem : BaseModel
+public class OpdrachtItem : BaseModel<Guid>
 {
     public string Name { get; set; }
 
