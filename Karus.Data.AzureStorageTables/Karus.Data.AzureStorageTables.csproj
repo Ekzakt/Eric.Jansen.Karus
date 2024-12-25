@@ -8,7 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="Azure.Data.Tables" Version="12.9.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
     <PackageReference Include="System.Text.Json" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Karus.Application\Karus.Application.csproj" />
+    <ProjectReference Include="..\Karus.Domain\Karus.Domain.csproj" />
   </ItemGroup>
 
 </Project>

@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Karus.Application\Karus.Application.csproj" />
+        <ProjectReference Include="..\Karus.Data.AzureStorageTables\Karus.Data.AzureStorageTables.csproj" />
     </ItemGroup>
 
 </Project>

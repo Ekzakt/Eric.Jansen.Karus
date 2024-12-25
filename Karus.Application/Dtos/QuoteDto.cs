@@ -1,10 +1,12 @@
-﻿namespace Karus.Domain.Models;
+﻿namespace Karus.Application.Dtos;
 
-public class Quote : BaseModel<Guid>
+public class QuoteDto : BaseDto<Guid>
 {
     public string Text { get; set; } = string.Empty;
 
     public string? Author { get; set; }
+
+    public DateOnly? QuoteDate { get; set; }
 
     public int? QuoteYear { get; set; }
 
