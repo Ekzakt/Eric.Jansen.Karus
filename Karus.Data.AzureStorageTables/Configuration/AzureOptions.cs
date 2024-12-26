@@ -6,5 +6,5 @@ public class AzureOptions
 {
     public const string SectionName = "Azure";
 
-    public AzureStorageOptions Storage { get; set; }
+    public AzureTableStorageOptions TableStorage { get; set; }
 }

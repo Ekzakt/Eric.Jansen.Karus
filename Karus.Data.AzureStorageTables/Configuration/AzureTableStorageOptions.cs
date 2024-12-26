@@ -2,7 +2,7 @@
 
 #nullable disable
 
-public class AzureStorageOptions
+public class AzureTableStorageOptions
 {
     public string ConnectionString { get; init; }
 }

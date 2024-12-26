@@ -17,7 +17,7 @@ public static class DependencyInjection
         {
             var options = serviceProdider.GetRequiredService<IOptions<AzureOptions>>().Value;
             var logger = serviceProdider.GetRequiredService<ILogger<BaseRepo<QuoteEntity, Guid>>>();
-            return new QuotesRepo(logger, options.Storage.ConnectionString, "KarusQuotes");
+            return new QuotesRepo(logger, options.TableStorage.ConnectionString, "KarusQuotes");
         });
 
         return services;

@@ -3,7 +3,6 @@ using Karus.Data.AzureStorageTables.Configuration;
 using Karus.Infrastucture.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
 
 namespace Karus.Infrastucture.Configuration;
 
@@ -15,9 +14,6 @@ public static class DependencyInjection
 
         services.AddScoped<IFileReader, FileReader>();
         services.AddScoped<IOpdrachtItemsService, OpdrachtItemsService>();
-
-        var azureOptions = services.BuildServiceProvider().GetRequiredService<IOptions<AzureOptions>>().Value;
-        string storageConnectionString = azureOptions.Storage.ConnectionString;
 
         return services;
     }
