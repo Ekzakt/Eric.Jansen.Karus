@@ -23,4 +23,8 @@
     <ProjectReference Include="..\Karus.Infrastucture\Karus.Infrastucture.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Pages\Test\" />
+  </ItemGroup>
+
 </Project>

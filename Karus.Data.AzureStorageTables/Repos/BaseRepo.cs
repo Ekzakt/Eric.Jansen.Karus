@@ -20,12 +20,12 @@ public abstract class BaseRepo<TEntity, TIdType>
     }
 
 
-    public async Task AddAsync(ITableEntity entity)
+    public async Task UpsertAsync(ITableEntity entity)
     {
         try
         {
             _logger.LogInformation("Adding entity to storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", entity.PartitionKey, entity.RowKey);
-            await _tableClient.AddEntityAsync(entity);
+            await _tableClient.UpsertEntityAsync(entity);
         }
         catch (Exception ex)
         {

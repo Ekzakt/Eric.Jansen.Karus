@@ -25,21 +25,29 @@ public class QuotesPageModel : PageModel
     }
 
 
-    public async Task<IActionResult> OnPostUpsertAsync(QuoteDto quote)
+    public async Task<IActionResult> OnPostUpsertAsync(QuoteDto quoteDto)
     {
-        var quoteDto = new QuoteDto
-        {
-            Id = quote.Id,
-            Text = quote.Text,
-            Author = quote.Author,
-            Category = quote.Location
-        };
-
         await _quoteService.AddAsync(quoteDto);
 
         return RedirectToPage();
     }
 
+
+    public async Task<IActionResult> OnGetQuoteAsync(string id)
+    {
+        var quote = await _quoteService.GetByIdAsync(Guid.Parse(id));
+        if (quote == null)
+        {
+            return NotFound();
+        }
+
+        return new JsonResult(quote);
+    }
+
+    public IActionResult OnGetQuote2(Guid id)
+    {
+        return new JsonResult(new { id, message = "Handler invoked successfully" });
+    }
 
     public async Task<IActionResult> OnPostDeleteAsync(Guid id)
     {

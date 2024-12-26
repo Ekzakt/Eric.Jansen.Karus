@@ -10,11 +10,20 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
+        //builder.Services.AddRouting(options =>
+        //{
+        //    options.LowercaseUrls = true; // Enforce lowercase URLs
+        //    options.AppendTrailingSlash = false; // Optional: Disable trailing slashes if needed
+        //});
+
         builder.Services.AddRazorPages();
 
         builder.Services.AddKarusApplicationServices(builder.Configuration);
         builder.Services.AddKarusInstrastructureServices(builder.Configuration);
         builder.Services.AddKarusDataServices(builder.Configuration);
+
+        builder.Logging.AddConsole();
+        builder.Logging.AddFilter("Microsoft.AspNetCore.Routing", LogLevel.Debug);
 
         var app = builder.Build();
 
@@ -31,6 +40,7 @@ public class Program
         app.UseAuthorization();
 
         app.MapStaticAssets();
+
         app.MapRazorPages()
            .WithStaticAssets();
 

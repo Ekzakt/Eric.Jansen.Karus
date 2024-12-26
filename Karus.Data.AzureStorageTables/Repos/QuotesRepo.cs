@@ -17,7 +17,7 @@ public class QuotesRepo : BaseRepo<QuoteEntity, Guid>, IRepo<Quote, Guid>
     public async Task AddAsync(Quote model)
     {
         var entity = model.ToEntity();
-        await AddAsync(entity);
+        await UpsertAsync(entity);
     }
 
 
