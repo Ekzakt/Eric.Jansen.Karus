@@ -1,7 +1,7 @@
 ﻿using Karus.Application.Contracts;
 using Karus.Application.Dtos;
+using Karus.Domain.Models;
 using Karus.Infrastucture.Mappers;
-using Karus.Infrastucture.Models;
 using Microsoft.Extensions.Logging;
 using System.Text.Json;
 

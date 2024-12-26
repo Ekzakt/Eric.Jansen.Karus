@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   viewBox="0 0 1920 200"
+   version="1.1"
+   id="svg899"
+   sodipodi:docname="golfing-mood.svg"
+   inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs903" />
+  <sodipodi:namedview
+     id="namedview901"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     showgrid="false"
+     inkscape:zoom="0.6484375"
+     inkscape:cx="933.78313"
+     inkscape:cy="100.24096"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1072"
+     inkscape:window-y="828"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg899" />
+  <path
+     fill="#080000"
+     fill-opacity="1"
+     d="M -4.9999999e-6,47.12681 53.333325,56.681385 C 106.66667,66.235959 213.33333,85.345108 320,77.701448 426.66666,70.057789 533.33333,24.195832 640,11.488249 746.66666,-1.6015181 853.33331,27.062204 960.00001,31.839491 1066.6667,36.616779 1173.3333,27.062204 1280,16.552173 1386.6667,6.0421414 1493.3333,-3.5124329 1600,1.2648542 1706.6667,6.0421414 1813.3333,27.062204 1866.6667,36.616779 L 1920,47.12681 V 200 h -53.3333 c -53.3334,0 -160,0 -266.6667,0 -106.6667,0 -213.3333,0 -320,0 -106.6667,0 -213.3333,0 -319.99999,0 -106.6667,0 -213.33335,0 -320.00001,0 -106.66667,0 -213.33334,0 -320,0 -106.66667,0 -213.33333,0 -266.666675,0 H -4.9999996e-6 Z"
+     id="path897"
+     style="stroke-width:1.12869;fill:#ff6600" />
+</svg>

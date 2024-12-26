@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
@@ -15,8 +15,16 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Ekzakt.Utilities" Version="0.2.33" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Karus.Application\Karus.Application.csproj" />
     <ProjectReference Include="..\Karus.Infrastucture\Karus.Infrastucture.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Pages\Test\" />
   </ItemGroup>
 
 </Project>
