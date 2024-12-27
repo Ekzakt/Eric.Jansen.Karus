@@ -1,0 +1,2409 @@
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Program.cs
+
+using Karus.Infrastucture.Configuration;
+
+namespace Karus.Client
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddRazorPages();
+
+            builder.AddKarusServices();
+
+            var app = builder.Build();
+
+            // Configure the HTTP request pipeline.
+            if (!app.Environment.IsDevelopment())
+            {
+                app.UseExceptionHandler("/Error");
+                app.UseHsts();
+            }
+
+            app.UseHttpsRedirection();
+
+            app.UseRouting();
+
+            app.UseAuthorization();
+
+            app.MapStaticAssets();
+            app.MapRazorPages()
+               .WithStaticAssets();
+
+            app.Run();
+        }
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Program.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Configuration\KarusOptions.cs
+
+namespace Karus.Application.Configuration;
+
+#nullable disable
+
+public class KarusOptions
+{
+    public const string SectionName = "Karus";
+
+    public List<string> AllowedIpAddresses { get; init; } = [];
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Configuration\KarusOptions.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IFileReader.cs
+
+namespace Karus.Application.Contracts;
+
+public interface IFileReader
+{
+    Task<string?> ReadWebroothPathFileAsync(params string[] pathSegments);
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IFileReader.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IGenericService.cs
+
+using Karus.Application.Dtos;
+using Karus.Domain.Models;
+
+namespace Karus.Application.Contracts;
+
+public interface IGenericService<TDomainModel, TDto, TIdType>
+    where TDomainModel : BaseModel<TIdType>
+    where TDto : BaseDto<TIdType>
+{
+    Task AddAsync(TDto model);
+
+    Task UpdateAsync(TDto model);
+
+    Task<IEnumerable<TDto>> GetAllAsync();
+    
+    Task<TDto> GetByIdAsync(TIdType id);
+
+    Task DeleteAsync(TIdType id);
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IGenericService.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IMapper.cs
+
+namespace Karus.Application.Contracts;
+
+public interface IMapper<TDomainModel, TDto> 
+    where TDto : class
+    where TDomainModel : class
+{
+    TDto ToDto(TDomainModel model);
+
+    TDomainModel ToDomainModel(TDto dto);
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IMapper.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IOpdrachtItemsService.cs
+
+using Karus.Application.Dtos;
+
+namespace Karus.Application.Contracts;
+
+public interface IOpdrachtItemsService
+{
+    Task<List<OpdrachtItemDto>> GetOprachtItemsAsync();
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IOpdrachtItemsService.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IStorageTableService.cs
+
+namespace Karus.Application.Contracts;
+
+public interface IStorageTableService<TDomainModel, TDto, TIdType>
+{
+    Task AddAsync(TDomainModel model);
+
+    Task UpdateAsync(TDomainModel model);
+
+    Task<IEnumerable<TDto>> GetAllAsync();
+
+    Task<TDto> GetByIdAsync(TIdType id);
+
+    Task DeleteAsync(TIdType id);
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IStorageTableService.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\BaseDto.cs
+
+namespace Karus.Application.Dtos;
+
+#nullable disable
+
+public abstract class BaseDto<TId>
+{
+    public TId Id { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\BaseDto.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\OpdrachtItemDto.cs
+
+namespace Karus.Application.Dtos;
+
+#nullable disable
+
+public class OpdrachtItemDto
+{
+    public string Name { get; set; }
+
+    public string CardImageFilename { get; set; }
+
+    public string NavigationUri { get; set; }
+
+    public string Description { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\OpdrachtItemDto.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\QuoteDto.cs
+
+namespace Karus.Application.Dtos;
+
+#nullable disable
+
+public class QuoteDto : BaseDto<Guid>
+{
+    public string Text { get; set; }
+
+    public string Author { get; set; }
+
+    public DateOnly? QuoteDate { get; set; }
+
+    public int? QuoteYear { get; set; }
+
+    public string Location { get; set; }
+
+    public string Category { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\QuoteDto.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Mappings\QuoteMapperExtensions.cs
+
+using Karus.Application.Contracts;
+using Karus.Application.Dtos;
+using Karus.Domain.Models;
+
+namespace Karus.Application.Mappings;
+
+public class QuoteMapperExtensions : IMapper<Quote, QuoteDto>
+{
+    public QuoteDto ToDto(Quote quote)
+    {
+        return new QuoteDto
+        {
+            Id = quote.Id,
+            Text = quote.Text,
+            Author = quote.Author,
+            QuoteDate = quote.QuoteDate,
+            QuoteYear = quote.QuoteYear,
+            Location = quote.Location,
+            Category = quote.Category
+        };
+    }
+
+    public Quote ToDomainModel(QuoteDto quoteDto)
+    {
+        return new Quote
+        {
+            Id = quoteDto.Id,
+            Text = quoteDto.Text,
+            Author = quoteDto.Author,
+            QuoteDate = quoteDto.QuoteDate,
+            QuoteYear = quoteDto.QuoteYear,
+            Location = quoteDto.Location,
+            Category = quoteDto.Category
+        };
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Mappings\QuoteMapperExtensions.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Services\QuotesService.cs
+
+using Karus.Application.Contracts;
+using Karus.Application.Dtos;
+using Karus.Domain.Models;
+
+namespace Karus.Application.Services;
+
+public class QuotesService<Quote, QuoteDto, TIdType> : IGenericService<Quote, QuoteDto, TIdType>
+    where Quote : BaseModel<TIdType>
+    where QuoteDto : BaseDto<TIdType>
+{
+    private readonly IMapper<Quote, QuoteDto> _mapper;
+    private readonly IStorageTableService<Quote, QuoteDto, TIdType> _storageTableService;
+
+    public QuotesService(
+        IMapper<Quote, QuoteDto> mapper, 
+        IStorageTableService<Quote, QuoteDto, TIdType> storageTableService)
+    {
+        _mapper = mapper;
+        _storageTableService = storageTableService;
+    }
+
+
+    public Task AddAsync(QuoteDto model)
+    {
+        var quote = _mapper.ToDomainModel(model);
+
+        return _storageTableService.AddAsync(quote);
+    }
+
+
+    public Task UpdateAsync(QuoteDto model)
+    {
+        var quote = _mapper.ToDomainModel(model);
+        throw new NotImplementedException();
+    }
+
+
+    public Task<IEnumerable<QuoteDto>> GetAllAsync()
+    {
+        // Implementation here
+        throw new NotImplementedException();
+    }
+
+
+    public Task<QuoteDto> GetByIdAsync(TIdType id)
+    {
+        // Implementation here
+        throw new NotImplementedException();
+    }
+
+
+    public Task DeleteAsync(TIdType id)
+    {
+        // Implementation here
+        throw new NotImplementedException();
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Services\QuotesService.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\Error.cshtml.cs
+
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace Karus.Client.Pages
+{
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    [IgnoreAntiforgeryToken]
+    public class ErrorModel : PageModel
+    {
+        public string? RequestId { get; set; }
+
+        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+        private readonly ILogger<ErrorModel> _logger;
+
+        public ErrorModel(ILogger<ErrorModel> logger)
+        {
+            _logger = logger;
+        }
+
+        public void OnGet()
+        {
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+        }
+    }
+
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\Error.cshtml.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\Index.cshtml.cs
+
+using Karus.Application.Contracts;
+using Karus.Application.Dtos;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace Karus.Client.Pages;
+
+public class IndexModel : PageModel
+{
+    private readonly ILogger<IndexModel> _logger;
+    private IOpdrachtItemsService _opdrachtItemsService;
+
+    public List<OpdrachtItemDto>? OpdrachtItems { get; private set; } = null;
+
+    public IndexModel(
+        ILogger<IndexModel> logger, 
+        IOpdrachtItemsService opdrachtItemsService)
+    {
+        _logger = logger;
+        _opdrachtItemsService = opdrachtItemsService;
+    }
+
+    public async Task OnGetAsync()
+    {
+        OpdrachtItems = await _opdrachtItemsService.GetOprachtItemsAsync();
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\Index.cshtml.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\QuoteEdit.cshtml.cs
+
+using Karus.Application.Contracts;
+using Karus.Application.Dtos;
+using Karus.Domain.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace Karus.Client.Pages;
+
+public class QuotesPageModel : PageModel
+{
+    private readonly IGenericService<Quote, QuoteDto, Guid> _quoteService;
+
+    [BindProperty]
+    public QuoteDto? Quote { get; set; } = null;
+
+    public IEnumerable<QuoteDto>? Quotes { get; set; } = null;
+
+
+    public QuotesPageModel(IGenericService<Quote, QuoteDto, Guid> quoteService)
+    {
+        _quoteService = quoteService;
+    }
+
+
+    public async Task<IActionResult> OnPostAddAsync(string text, string author, string category)
+    {
+        var quoteDto = new QuoteDto
+        {
+            Id = Guid.NewGuid(),
+            Text = text,
+            Author = author,
+            Category = category
+        };
+
+        await _quoteService.AddAsync(quoteDto);
+
+        return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+    {
+        await _quoteService.DeleteAsync(id);
+
+        return RedirectToPage();
+    }
+}
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\QuoteEdit.cshtml.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Configuration\AzureOptions.cs
+
+namespace Karus.Data.AzureStorageTables.Configuration;
+
+#nullable disable
+
+public class AzureOptions
+{
+    public const string SectionName = "Azure";
+
+    public AzureStorageOptions Storage { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Configuration\AzureOptions.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Configuration\AzureStorageOptions.cs
+
+namespace Karus.Data.AzureStorageTables.Configuration;
+
+#nullable disable
+
+public class AzureStorageOptions
+{
+    public string ConnectionString { get; init; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Configuration\AzureStorageOptions.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Entities\BaseStorageTableEntity.cs
+
+using Azure;
+using Azure.Data.Tables;
+
+namespace Karus.Data.AzureStorageTables.Entities;
+
+#nullable disable
+
+public abstract class BaseStorageTableEntity : ITableEntity
+{
+    public string PartitionKey { get; set; }
+
+    public string RowKey { get; set; }
+
+    public DateTimeOffset? Timestamp { get; set; }
+
+    public ETag ETag { get; set; }
+
+    public int SortNumber { get; set; } = 100;
+
+    public bool IsInVisible { get; set; }
+
+    public DateTime Added { get; set; }
+
+    public DateTime? Modified { get; set; }
+}
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Entities\BaseStorageTableEntity.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Entities\QuoteStorageTableEntity.cs
+
+using Azure.Data.Tables;
+using Azure;
+
+namespace Karus.Data.AzureStorageTables.Entities;
+
+#nullable disable
+
+public class QuoteStorageTableEntity : BaseStorageTableEntity
+{
+    public string Text { get; set; }
+
+    public string Author { get; set; }
+
+    public DateOnly? QuoteDate { get; set; }
+
+    public int? QuoteYear { get; set; }
+
+    public string Location { get; set; }
+
+    public string Category { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Entities\QuoteStorageTableEntity.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Mappers\StorageTableMapperExtensions.cs
+
+using Karus.Application.Dtos;
+using Karus.Data.AzureStorageTables.Entities;
+using Karus.Domain.Models;
+
+namespace Karus.Data.AzureStorageTables.Mappers;
+
+public static class StorageTableMapperExtensions
+{
+    public static QuoteStorageTableEntity ToStorageTableEntity(this QuoteDto dto)
+    {
+        return new QuoteStorageTableEntity
+        {
+            PartitionKey = "Quote",
+            RowKey = dto.Id.ToString(),
+            Author = dto.Author,
+            QuoteDate = dto.QuoteDate,
+            QuoteYear = dto.QuoteYear,
+            Location = dto.Location,
+            Category = dto.Category
+        };
+    }
+
+    public static QuoteDto ToDto(this QuoteStorageTableEntity storageTableEntity)
+    {
+        return new QuoteDto
+        {
+            Id = Guid.Parse(storageTableEntity.RowKey),
+            Text = storageTableEntity.Text,
+            Author = storageTableEntity.Author,
+            QuoteDate = storageTableEntity.QuoteDate,
+            QuoteYear = storageTableEntity.QuoteYear,
+            Location = storageTableEntity.Location,
+            Category = storageTableEntity.Category
+        };
+    }
+}
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Mappers\StorageTableMapperExtensions.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Services\StorageTableService.cs
+
+using Azure;
+using Azure.Data.Tables;
+using Karus.Data.AzureStorageTables.Entities;
+using Microsoft.Extensions.Logging;
+
+namespace Karus.Data.AzureStorageTables.Services;
+
+public class StorageTableService<TDto, TStorageTableEntity, TId>
+    where TDto : class, new()
+    where TStorageTableEntity : BaseStorageTableEntity, new()
+{
+    private readonly TableClient _tableClient;
+    private readonly ILogger<StorageTableService<TDto, TStorageTableEntity, TId>> _logger;
+
+    public StorageTableService(ILogger<StorageTableService<TDto, TStorageTableEntity, TId>> logger, string connectionString, string tableName)
+    {
+        _logger = logger;
+        _tableClient = new TableClient(connectionString, tableName);
+        _tableClient.CreateIfNotExists();
+    }
+
+    public async Task AddAsync(TStorageTableEntity entity)
+    {
+        try
+        {
+            _logger.LogInformation("Adding entity to storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", entity.PartitionKey, entity.RowKey);
+            await _tableClient.AddEntityAsync(entity);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to add entity to storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", entity.PartitionKey, entity.RowKey);
+            throw;
+        }
+    }
+
+    public async Task<TDto?> GetAsync(string partitionKey, TId rowKey, Func<TStorageTableEntity, TDto> mapper)
+    {
+        try
+        {
+            _logger.LogInformation("Fetching entity from storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+            var entity = await _tableClient.GetEntityAsync<TStorageTableEntity>(partitionKey, rowKey.ToString());
+            return mapper(entity.Value);
+        }
+        catch (RequestFailedException ex) when (ex.Status == 404)
+        {
+            _logger.LogWarning("Entity not found in storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+            return null;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to fetch entity from storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+            throw;
+        }
+    }
+
+    public async Task UpdateAsync(TDto domainModel, string partitionKey, TId rowKey, Func<TDto, string, TStorageTableEntity> mapper)
+    {
+        var entity = mapper(domainModel, partitionKey);
+        try
+        {
+            _logger.LogInformation("Updating entity in storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", entity.PartitionKey, entity.RowKey);
+            await _tableClient.UpdateEntityAsync(entity, ETag.All, TableUpdateMode.Replace);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update entity in storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", entity.PartitionKey, entity.RowKey);
+            throw;
+        }
+    }
+
+    public async Task DeleteAsync(string partitionKey, TId rowKey)
+    {
+        try
+        {
+            _logger.LogInformation("Deleting entity from storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+            await _tableClient.DeleteEntityAsync(partitionKey, rowKey!.ToString());
+        }
+        catch (RequestFailedException ex) when (ex.Status == 404)
+        {
+            _logger.LogWarning("Entity not found for deletion in storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete entity from storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+            throw;
+        }
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Services\StorageTableService.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\PhotoType.cs
+
+namespace Karus.Domain.Enums;
+
+public enum PhotoType
+{
+    Caring,
+    Sad,
+    Happy
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\PhotoType.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\SpotifyItemSize.cs
+
+using System.Runtime.Serialization;
+
+namespace Karus.Domain.Enums;
+
+public enum SpotifyItemSize
+{
+    small = 152,
+
+    large = 352
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\SpotifyItemSize.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\SpotifyItemType.cs
+
+namespace Karus.Domain.Enums;
+
+/// <summary>
+/// Represents the type of a Spotify item. 
+/// Shows (podcasts), playlists and tracks are the only types of items that can be embedded.
+/// This enum is case sensitive because it is used to build the URI of the item.
+/// </summary>
+public enum SpotifyItemType
+{
+    playlist,
+
+    show,
+
+    track
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\SpotifyItemType.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\JsonConverters\PhotoTypeJsonConverter.cs
+
+using Karus.Domain.Enums;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace Karus.Domain.JsonConverters;
+
+public class PhotoTypeJsonConverter : JsonConverter<PhotoType>
+{
+    public override PhotoType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        var value = reader.GetString()!.ToLowerInvariant();
+
+        return value switch
+        {
+            "caring" => PhotoType.Caring,
+            "happy" => PhotoType.Happy,
+            "sad" => PhotoType.Sad,
+            _ => throw new JsonException($"Invalid value for PhotoType: {value}")
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, PhotoType value, JsonSerializerOptions options)
+    {
+        var stringValue = value switch
+        {
+            PhotoType.Caring => "caring",
+            PhotoType.Happy => "happy",
+            PhotoType.Sad => "sad",
+            _ => throw new JsonException($"Invalid SpotifyItemSize: {value}")
+        };
+
+        writer.WriteStringValue(stringValue);
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\JsonConverters\PhotoTypeJsonConverter.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\JsonConverters\SpotifyItemTypeJsonConverter.cs
+
+using Karus.Domain.Enums;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace Karus.Domain.JsonConverters;
+
+public class SpotifyItemTypeJsonConverter : JsonConverter<SpotifyItemType>
+{
+    public override SpotifyItemType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        var value = reader.GetString()!.ToLowerInvariant();
+
+        return value switch
+        {
+            "playlist" => SpotifyItemType.playlist,
+            "show" => SpotifyItemType.show,
+            "track" => SpotifyItemType.track,
+            _ => throw new JsonException($"Invalid value for SpotifyItemType: {value}")
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, SpotifyItemType value, JsonSerializerOptions options)
+    {
+        var stringValue = value switch
+        {
+            SpotifyItemType.playlist => "playlist",
+            SpotifyItemType.show => "show",
+            SpotifyItemType.track => "track",
+            _ => throw new JsonException($"Invalid SpotifyItemType: {value}")
+        };
+
+        writer.WriteStringValue(stringValue);
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\JsonConverters\SpotifyItemTypeJsonConverter.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\BalansItem.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class BalansItem : BaseModel<Guid>
+{
+
+    public string Title { get; set; }
+
+    public string CssClass { get; set; }
+
+    public List<string> ShortTermValues { get; set; }
+
+    public List<string> LongTermValues { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\BalansItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\BaseModel.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public abstract class BaseModel<TId>
+{
+    public TId Id { get; set; }
+
+    public int SortNumber { get; set; } = 100;
+
+    public bool IsInVisible { get; set; } = false;
+
+    public DateTime Added { get; set; } = DateTime.UtcNow;
+
+    public DateTime? Modified { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\BaseModel.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\EmergencyContact.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class EmergencyContact : BaseModel<Guid>
+{
+    public string Name { get; set; }
+
+    public string PhoneNumber { get; set; }
+
+    public string ImageFilename { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\EmergencyContact.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\HaltItem.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class HaltItem : BaseModel<Guid>
+{
+    public string Name { get; set; }
+
+    public string ImageFilename { get; set; }
+
+    public string Description { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\HaltItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\NewsItem.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class NewsItem : BaseModel<Guid>
+{
+    /// <summary>
+    /// A small summary of the news item, preferably then heading of the news.
+    /// </summary>
+    public string Title { get; set; }
+
+    /// <summary>
+    /// Image size has to be 360 x 720 pixels. Use
+    /// developer tools to get the right size.
+    /// </summary>
+    public string ImageFilename { get; set; }
+
+    /// <summary>
+    /// The uri to navigate to when the item is clicked.
+    /// </summary>
+    public string Uri { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\NewsItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\OpdrachtItem.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class OpdrachtItem : BaseModel<Guid>
+{
+    public string Name { get; set; }
+
+    public string CardImageFilename { get; set; }
+
+    public string NavigationUri { get; set; }
+
+    public string Description { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\OpdrachtItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\Photo.cs
+
+using Karus.Domain.Enums;
+using Karus.Domain.JsonConverters;
+using System.Text.Json.Serialization;
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class Photo : BaseModel<Guid>
+{
+    public string FileName { get; set; }
+
+    [JsonConverter(typeof(PhotoTypeJsonConverter))]
+    public PhotoType Type { get; set; }
+
+    public string Description { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\Photo.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\Quote.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class Quote : BaseModel<Guid>
+{
+    public string Text { get; set; }
+
+    public string Author { get; set; }
+
+    public DateOnly? QuoteDate { get; set; }
+
+    public int? QuoteYear { get; set; }
+
+    public string Location { get; set; }
+
+    public string Category { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\Quote.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\SpotifyItem.cs
+
+using Karus.Domain.Enums;
+using Karus.Domain.JsonConverters;
+using System.Text.Json.Serialization;
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class SpotifyItem : BaseModel<SpotifyItem>
+{
+    public int Id { get; set; }
+
+    public string Name { get; set; }
+
+    public string Uri { get; set; }
+
+
+    [JsonConverter(typeof(SpotifyItemTypeJsonConverter))]
+    public SpotifyItemType Type { get; set; }
+}
+
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\SpotifyItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\WaardenboomItem.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class WaardenboomItem : BaseModel<Guid>
+{
+    public string Name { get; set; }
+
+    public string Content { get; set; }
+
+    public int X { get; set; } = 0;
+
+    public int Y { get; set; } = 0;
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\WaardenboomItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Configuration\WebApplicationBuilderExtensions.cs
+
+using Karus.Application.Configuration;
+using Karus.Application.Contracts;
+using Karus.Data.AzureStorageTables.Configuration;
+using Karus.Infrastucture.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+
+namespace Karus.Infrastucture.Configuration;
+
+public static class WebApplicationBuilderExtensions
+{
+    public static WebApplicationBuilder AddKarusServices(this WebApplicationBuilder builder)
+    {
+        builder.AddKarusOptions();
+
+        builder.Services.AddScoped<IFileReader, FileReader>();
+        builder.Services.AddScoped<IOpdrachtItemsService, OpdrachtItemsService>();
+
+        var azureOptions = builder.Services.BuildServiceProvider().GetRequiredService<IOptions<AzureOptions>>().Value;
+        string storageConnectionString = azureOptions.Storage.ConnectionString;
+
+        return builder;
+    }
+
+    #region Helpers
+
+    private static WebApplicationBuilder AddKarusOptions(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<KarusOptions>(
+            builder.Configuration.GetSection(KarusOptions.SectionName));
+
+        builder.Services.Configure<AzureOptions>(
+            builder.Configuration.GetSection(AzureOptions.SectionName));
+
+        return builder;
+    }
+
+    #endregion "Helpers"
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Configuration\WebApplicationBuilderExtensions.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Mappers\ModelToDtoMappers.cs
+
+using Karus.Application.Dtos;
+using Karus.Domain.Models;
+
+namespace Karus.Infrastucture.Mappers;
+
+public static class ModelToDtoMappers
+{
+    public static OpdrachtItemDto ToOpdrachtItem(this OpdrachtItem opdrachtItem)
+    {
+        return new OpdrachtItemDto
+        {
+            Name = opdrachtItem.Name,
+            CardImageFilename = opdrachtItem.CardImageFilename,
+            NavigationUri = opdrachtItem.NavigationUri,
+            Description = opdrachtItem.Description
+        };
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Mappers\ModelToDtoMappers.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Services\FileReader.cs
+
+using Karus.Application.Contracts;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
+
+namespace Karus.Infrastucture.Services;
+
+public class FileReader : IFileReader
+{
+    private ILogger<FileReader> _logger;
+    private readonly IWebHostEnvironment _environment;
+
+    public FileReader(
+        ILogger<FileReader> logger,
+        IWebHostEnvironment environment)
+    {
+        _logger = logger;
+        _environment = environment;
+    }
+
+    public async Task<string?> ReadWebroothPathFileAsync(params string[] pathSegments)
+    {
+        var basePath = Path.Combine(_environment.WebRootPath, "data");
+        var filePath = Path.Combine(pathSegments);
+        var fullPath = Path.Combine(basePath, filePath);
+
+        if (File.Exists(fullPath))
+        {
+            return await File.ReadAllTextAsync(fullPath);
+        }
+        else
+        {
+            _logger.LogWarning("File not found: {File}", fullPath);
+
+            return null;
+        }
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Services\FileReader.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Services\OpdrachtItemsService.cs
+
+using Karus.Application.Contracts;
+using Karus.Application.Dtos;
+using Karus.Domain.Models;
+using Karus.Infrastucture.Mappers;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
+
+namespace Karus.Infrastucture.Services;
+
+public class OpdrachtItemsService : IOpdrachtItemsService
+{
+    private readonly ILogger<OpdrachtItemsService> _logger;
+    private readonly IFileReader _fileReader;
+
+
+    public OpdrachtItemsService(
+        ILogger<OpdrachtItemsService> logger,
+        IFileReader fileReader)
+    {
+        _logger = logger;
+        _fileReader = fileReader;
+    }
+
+
+    public async Task<List<OpdrachtItemDto>> GetOprachtItemsAsync()
+    {
+        var opdrachtItems = new List<OpdrachtItem>();
+        var jsonData = await _fileReader.ReadWebroothPathFileAsync("opdrachten", "items.json");
+
+        if (string.IsNullOrEmpty(jsonData))
+        {
+            return [];
+        }
+
+        opdrachtItems = JsonSerializer.Deserialize<List<OpdrachtItem>>(jsonData!, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        if (opdrachtItems == null)
+        {
+            _logger.LogWarning("Failed to deserialize opdrachtItems.");
+            return [];
+        }
+
+        return opdrachtItems.Select(opdrachtItem => opdrachtItem.ToOpdrachtItem()).ToList();
+
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Services\OpdrachtItemsService.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Program.cs
+
+using Karus.Application.Configuration;
+using Karus.Infrastucture.Configuration;
+
+namespace Karus.Client;
+
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        var builder = WebApplication.CreateBuilder(args);
+
+        builder.Services.AddRazorPages();
+
+        builder.Services.AddKarusInstrastructureServices(builder.Configuration);
+        builder.Services.AddKarusApplicationServices(builder.Configuration);
+
+        var app = builder.Build();
+
+        if (!app.Environment.IsDevelopment())
+        {
+            app.UseExceptionHandler("/Error");
+            app.UseHsts();
+        }
+
+        app.UseHttpsRedirection();
+
+        app.UseRouting();
+
+        app.UseAuthorization();
+
+        app.MapStaticAssets();
+        app.MapRazorPages()
+           .WithStaticAssets();
+
+        app.Run();
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Program.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Configuration\DepencyInjection.cs
+
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+
+namespace Karus.Application.Configuration;
+
+public static class DependencyInjection
+{
+    public static IServiceCollection AddKarusApplicationServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddKarusOptions(configuration);
+
+        return services;
+    }
+
+
+    #region Helpers
+
+    private static IServiceCollection AddKarusOptions(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<KarusOptions>(
+            configuration.GetSection(KarusOptions.SectionName).Bind);
+
+        return services;
+    }
+
+    #endregion "Helpers"
+
+
+
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Configuration\DepencyInjection.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Configuration\KarusOptions.cs
+
+namespace Karus.Application.Configuration;
+
+#nullable disable
+
+public class KarusOptions
+{
+    public const string SectionName = "Karus";
+
+    public List<string> AllowedIpAddresses { get; init; } = [];
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Configuration\KarusOptions.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IFileReader.cs
+
+namespace Karus.Application.Contracts;
+
+public interface IFileReader
+{
+    Task<string?> ReadWebroothPathFileAsync(params string[] pathSegments);
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IFileReader.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IGenericService.cs
+
+using Karus.Application.Dtos;
+
+namespace Karus.Application.Contracts;
+
+public interface IGenericService<TDto, TIdType>
+    where TDto : BaseDto<TIdType>
+{
+    Task AddAsync(TDto tdo);
+
+    Task UpdateAsync(TDto tdo);
+
+    Task DeleteAsync(TIdType id);
+
+    Task<List<TDto>> GetAllAsync();
+    
+    Task<TDto> GetByIdAsync(TIdType id);
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IGenericService.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IOpdrachtItemsService.cs
+
+using Karus.Application.Dtos;
+
+namespace Karus.Application.Contracts;
+
+public interface IOpdrachtItemsService
+{
+    Task<List<OpdrachtItemDto>> GetOprachtItemsAsync();
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IOpdrachtItemsService.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IRepo.cs
+
+using Karus.Domain.Models;
+
+namespace Karus.Application.Contracts;
+
+public interface IRepo<TModel, TIdType> 
+    where TModel : BaseModel<TIdType>
+{
+    Task AddAsync(TModel model);
+
+    Task UpdateAsync(TModel model);
+
+    Task DeleteAsync(TIdType id);
+
+    Task<List<TModel>> GetAllAsync();
+
+    Task<TModel?> GetByIdAsync(TIdType id);
+
+
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Contracts\IRepo.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\BaseDto.cs
+
+namespace Karus.Application.Dtos;
+
+#nullable disable
+
+public abstract class BaseDto<TIdType>
+{
+    public TIdType Id { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\BaseDto.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\OpdrachtItemDto.cs
+
+namespace Karus.Application.Dtos;
+
+#nullable disable
+
+public class OpdrachtItemDto
+{
+    public string Name { get; set; }
+
+    public string CardImageFilename { get; set; }
+
+    public string NavigationUri { get; set; }
+
+    public string Description { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\OpdrachtItemDto.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\QuoteDto.cs
+
+namespace Karus.Application.Dtos;
+
+#nullable disable
+
+public class QuoteDto : BaseDto<Guid>
+{
+    public string Text { get; set; }
+
+    public string Author { get; set; }
+
+    public DateOnly? QuoteDate { get; set; }
+
+    public int? QuoteYear { get; set; }
+
+    public string Location { get; set; }
+
+    public string Category { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Dtos\QuoteDto.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Mappers\MapperExtensions.cs
+
+using Karus.Application.Dtos;
+using Karus.Domain.Models;
+
+namespace Karus.Application.Mappers;
+
+public static class MapperExtensions
+{
+    public static QuoteDto ToDto(this Quote quote)
+    {
+        return new QuoteDto
+        {
+            Id = quote.Id,
+            Text = quote.Text,
+            Author = quote.Author,
+            QuoteDate = quote.QuoteDate,
+            QuoteYear = quote.QuoteYear,
+            Location = quote.Location,
+            Category = quote.Category
+        };
+    }
+
+    public static Quote ToDomainModel(this QuoteDto quoteDto)
+    {
+        return new Quote
+        {
+            Id = quoteDto.Id,
+            Text = quoteDto.Text,
+            Author = quoteDto.Author,
+            QuoteDate = quoteDto.QuoteDate,
+            QuoteYear = quoteDto.QuoteYear,
+            Location = quoteDto.Location,
+            Category = quoteDto.Category
+        };
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Mappers\MapperExtensions.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Services\QuoteService.cs
+
+using Karus.Application.Contracts;
+using Karus.Application.Dtos;
+using Karus.Domain.Models;
+
+namespace Karus.Application.Services;
+
+public class QuoteService : IGenericService<QuoteDto, Guid>
+{
+    private readonly IRepo<Quote, Guid> _repo;
+
+    public QuoteService(IRepo<Quote, Guid> repo)
+    {
+        _repo = repo;
+    }
+
+    public Task AddAsync(QuoteDto tdo)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task DeleteAsync(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<List<QuoteDto>> GetAllAsync()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task<QuoteDto> GetByIdAsync(Guid id)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task UpdateAsync(QuoteDto tdo)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Application\Services\QuoteService.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Configuration\AddKarusApplicationServices.cs
+
+using Karus.Data.AzureStorageTables.Configuration;
+
+namespace Karus.Application.Configuration;
+
+public static class AddKarusApplicationServices
+{
+    public static WebApplicationBuilder AddKarusInstrastructureServices(this WebApplicationBuilder builder)
+    {
+        return builder;
+    }
+
+    #region Helpers
+
+    private static WebApplicationBuilder AddKarusOptions(this WebApplicationBuilder builder)
+    {
+        builder.Services.Configure<KarusOptions>(
+            builder.Configuration.GetSection(KarusOptions.SectionName));
+
+        builder.Services.Configure<AzureOptions>(
+            builder.Configuration.GetSection(AzureOptions.SectionName));
+
+        return builder;
+    }
+
+    #endregion "Helpers"
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Configuration\AddKarusApplicationServices.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\Error.cshtml.cs
+
+using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace Karus.Client.Pages
+{
+    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+    [IgnoreAntiforgeryToken]
+    public class ErrorModel : PageModel
+    {
+        public string? RequestId { get; set; }
+
+        public bool ShowRequestId => !string.IsNullOrEmpty(RequestId);
+
+        private readonly ILogger<ErrorModel> _logger;
+
+        public ErrorModel(ILogger<ErrorModel> logger)
+        {
+            _logger = logger;
+        }
+
+        public void OnGet()
+        {
+            RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier;
+        }
+    }
+
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\Error.cshtml.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\Index.cshtml.cs
+
+using Karus.Application.Contracts;
+using Karus.Application.Dtos;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace Karus.Client.Pages;
+
+public class IndexModel : PageModel
+{
+    private readonly ILogger<IndexModel> _logger;
+    private IOpdrachtItemsService _opdrachtItemsService;
+
+    public List<OpdrachtItemDto>? OpdrachtItems { get; private set; } = null;
+
+    public IndexModel(
+        ILogger<IndexModel> logger, 
+        IOpdrachtItemsService opdrachtItemsService)
+    {
+        _logger = logger;
+        _opdrachtItemsService = opdrachtItemsService;
+    }
+
+    public async Task OnGetAsync()
+    {
+        OpdrachtItems = await _opdrachtItemsService.GetOprachtItemsAsync();
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\Index.cshtml.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\QuoteEdit.cshtml.cs
+
+using Karus.Application.Contracts;
+using Karus.Application.Dtos;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+
+namespace Karus.Client.Pages;
+
+public class QuotesPageModel : PageModel
+{
+    private readonly IGenericService<QuoteDto, Guid> _quoteService;
+
+    [BindProperty]
+    public QuoteDto? Quote { get; set; } = null;
+
+    public IEnumerable<QuoteDto>? Quotes { get; set; } = null;
+
+
+    public QuotesPageModel(IGenericService<QuoteDto, Guid> quoteService)
+    {
+        _quoteService = quoteService;
+    }
+
+
+    public async Task<IActionResult> OnPostAddAsync(string text, string author, string category)
+    {
+        var quoteDto = new QuoteDto
+        {
+            Id = Guid.NewGuid(),
+            Text = text,
+            Author = author,
+            Category = category
+        };
+
+        await _quoteService.AddAsync(quoteDto);
+
+        return RedirectToPage();
+    }
+
+    public async Task<IActionResult> OnPostDeleteAsync(Guid id)
+    {
+        await _quoteService.DeleteAsync(id);
+
+        return RedirectToPage();
+    }
+}
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Client\Pages\QuoteEdit.cshtml.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Configuration\AzureOptions.cs
+
+namespace Karus.Data.AzureStorageTables.Configuration;
+
+#nullable disable
+
+public class AzureOptions
+{
+    public const string SectionName = "Azure";
+
+    public AzureStorageOptions Storage { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Configuration\AzureOptions.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Configuration\AzureStorageOptions.cs
+
+namespace Karus.Data.AzureStorageTables.Configuration;
+
+#nullable disable
+
+public class AzureStorageOptions
+{
+    public string ConnectionString { get; init; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Configuration\AzureStorageOptions.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Entities\BaseEntity.cs
+
+using Azure;
+using Azure.Data.Tables;
+
+namespace Karus.Data.AzureStorageTables.Entities;
+
+#nullable disable
+
+public abstract class BaseEntity : ITableEntity
+{
+    public string PartitionKey { get; set; }
+
+    public string RowKey { get; set; }
+
+    public DateTimeOffset? Timestamp { get; set; }
+
+    public ETag ETag { get; set; }
+
+    public int SortNumber { get; set; } = 100;
+
+    public bool IsInVisible { get; set; }
+
+    public DateTime Added { get; set; }
+
+    public DateTime? Modified { get; set; }
+}
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Entities\BaseEntity.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Entities\QuoteEntity.cs
+
+namespace Karus.Data.AzureStorageTables.Entities;
+
+#nullable disable
+
+public class QuoteEntity : BaseEntity
+{
+    public string Text { get; set; }
+
+    public string Author { get; set; }
+
+    public DateOnly? QuoteDate { get; set; }
+
+    public int? QuoteYear { get; set; }
+
+    public string Location { get; set; }
+
+    public string Category { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Entities\QuoteEntity.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Mappers\EntityMapperExtensions.cs
+
+using Karus.Data.AzureStorageTables.Entities;
+using Karus.Domain.Models;
+
+namespace Karus.Data.AzureStorageTables.Mappers;
+
+public static class EntityMapperExtensions
+{
+    public static QuoteEntity ToEntity(this Quote model)
+    {
+        return new QuoteEntity
+        {
+            PartitionKey = "Quote",
+            RowKey = model.Id.ToString(),
+            Author = model.Author,
+            QuoteDate = model.QuoteDate,
+            QuoteYear = model.QuoteYear,
+            Location = model.Location,
+            Category = model.Category
+        };
+    }
+
+    public static Quote ToModel(this QuoteEntity entity)
+    {
+        return new Quote
+        {
+            Id = Guid.Parse(entity.RowKey),
+            Text = entity.Text,
+            Author = entity.Author,
+            QuoteDate = entity.QuoteDate,
+            QuoteYear = entity.QuoteYear,
+            Location = entity.Location,
+            Category = entity.Category
+        };
+    }
+}
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Mappers\EntityMapperExtensions.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Services\BaseRepo.cs
+
+using Azure.Data.Tables;
+using Karus.Application.Contracts;
+using Microsoft.Extensions.Logging;
+using Karus.Data.AzureStorageTables.Entities;
+using Azure;
+
+namespace Karus.Data.AzureStorageTables.Services;
+
+public abstract class BaseRepo<TEntity, TIdType>
+    where TEntity : BaseEntity
+{
+    private readonly TableClient _tableClient;
+    private readonly ILogger<BaseRepo<TEntity, TIdType>> _logger;
+
+    public BaseRepo(ILogger<BaseRepo<TEntity, TIdType>> logger, string connectionString, string tableName)
+    {
+        _logger = logger;
+        _tableClient = new TableClient(connectionString, tableName);
+        _tableClient.CreateIfNotExists();
+    }
+
+
+    public async Task AddAsync(ITableEntity entity)
+    {
+        try
+        {
+            _logger.LogInformation("Adding entity to storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", entity.PartitionKey, entity.RowKey);
+            await _tableClient.AddEntityAsync(entity);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to add entity to storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", entity.PartitionKey, entity.RowKey);
+            throw;
+        }
+    }
+
+
+    public async Task UpdateAsync(TEntity entity)
+    {
+        try
+        {
+            _logger.LogInformation("Updating entity in storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", entity.PartitionKey, entity.RowKey);
+            await _tableClient.UpdateEntityAsync(entity, ETag.All, TableUpdateMode.Replace);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to update entity in storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", entity.PartitionKey, entity.RowKey);
+            throw;
+        }
+    }
+
+
+    public async Task DeleteAsync(string partitionKey, TIdType id)
+    {
+        try
+        {
+            _logger.LogInformation("Deleting entity from storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+            await _tableClient.DeleteEntityAsync(partitionKey, id!.ToString());
+        }
+        catch (RequestFailedException ex) when (ex.Status == 404)
+        {
+            _logger.LogWarning("Entity not found for deletion in storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Failed to delete entity from storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+            throw;
+        }
+    }
+
+
+    public async Task<IEnumerable<TEntity>> GetAllAsync(string partitionKey)
+    {
+        _logger.LogInformation("Fetching all entities from storage table. PartitionKey={PartitionKey}", partitionKey);
+
+        var output = new List<TEntity>();
+        var entities = _tableClient.QueryAsync<TEntity>();
+
+        await foreach (var entity in entities)
+        {
+            output.Add(entity);
+        }
+
+        return output;
+    }
+
+
+    public async Task<TEntity?> GetByIdAsync(string partitionKey, TIdType id)
+    {
+        try
+        {
+            _logger.LogInformation("Fetching entity from storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, id);
+
+            var response = await _tableClient.GetEntityAsync<TEntity>(partitionKey, id!.ToString());
+            return response.Value;
+        }
+        catch (RequestFailedException ex) when (ex.Status == 404)
+        {
+            _logger.LogWarning("Entity not found in storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, id);
+            return null;
+        }
+    }
+
+    
+
+
+    //public async Task AddAsync(TStorageTableEntity entity)
+    //{
+    //    try
+    //    {
+    //        _logger.LogInformation("Adding entity to storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", entity.PartitionKey, entity.RowKey);
+    //        await _tableClient.AddEntityAsync(entity);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        _logger.LogError(ex, "Failed to add entity to storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", entity.PartitionKey, entity.RowKey);
+    //        throw;
+    //    }
+    //}
+
+    //public async Task<TDomain?> GetAsync(string partitionKey, TId rowKey, Func<TStorageTableEntity, TDomain> mapper)
+    //{
+    //    try
+    //    {
+    //        _logger.LogInformation("Fetching entity from storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+    //        var entity = await _tableClient.GetEntityAsync<TStorageTableEntity>(partitionKey, rowKey.ToString());
+    //        return mapper(entity.Value);
+    //    }
+    //    catch (RequestFailedException ex) when (ex.Status == 404)
+    //    {
+    //        _logger.LogWarning("Entity not found in storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+    //        return null;
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        _logger.LogError(ex, "Failed to fetch entity from storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+    //        throw;
+    //    }
+    //}
+
+    //public async Task DeleteAsync(string partitionKey, TId rowKey)
+    //{
+    //    try
+    //    {
+    //        _logger.LogInformation("Deleting entity from storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+    //        await _tableClient.DeleteEntityAsync(partitionKey, rowKey!.ToString());
+    //    }
+    //    catch (RequestFailedException ex) when (ex.Status == 404)
+    //    {
+    //        _logger.LogWarning("Entity not found for deletion in storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+    //    }
+    //    catch (Exception ex)
+    //    {
+    //        _logger.LogError(ex, "Failed to delete entity from storage table. PartitionKey={PartitionKey}, RowKey={RowKey}", partitionKey, rowKey);
+    //        throw;
+    //    }
+    //}
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Services\BaseRepo.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Services\QuotesRepo.cs
+
+using Karus.Application.Contracts;
+using Karus.Data.AzureStorageTables.Entities;
+using Karus.Data.AzureStorageTables.Mappers;
+using Karus.Domain.Models;
+using Microsoft.Extensions.Logging;
+
+namespace Karus.Data.AzureStorageTables.Services;
+
+public class QuotesRepo : BaseRepo<QuoteEntity, Guid>, IRepo<Quote, Guid>
+{
+    public QuotesRepo(ILogger<BaseRepo<QuoteEntity, Guid>> logger, string connectionString, string tableName) 
+        : base(logger, connectionString, tableName)
+    {
+    }
+
+
+    public async Task AddAsync(Quote model)
+    {
+        var entity = model.ToEntity();
+        await base.AddAsync(entity);
+    }
+
+
+    public async Task UpdateAsync(Quote model)
+    {
+        var entity = model.ToEntity();
+        await base.UpdateAsync(entity);
+    }
+
+
+    public async Task DeleteAsync(Guid id)
+    {
+        await base.DeleteAsync("Quotes", id);
+    }
+
+
+    public async Task<List<Quote>> GetAllAsync()
+    {
+        var quotes = await base.GetAllAsync("Quotes");
+
+        return quotes.Select(q => q.ToModel()).ToList();
+    }
+
+
+    public async Task<Quote?> GetByIdAsync(Guid id)
+    {
+        var quote = await base.GetByIdAsync("Quotes", id);
+
+        if (quote is not null)
+        {
+            return quote.ToModel(); 
+        }
+
+        return null;
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Data.AzureStorageTables\Services\QuotesRepo.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\PhotoType.cs
+
+namespace Karus.Domain.Enums;
+
+public enum PhotoType
+{
+    Caring,
+    Sad,
+    Happy
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\PhotoType.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\SpotifyItemSize.cs
+
+using System.Runtime.Serialization;
+
+namespace Karus.Domain.Enums;
+
+public enum SpotifyItemSize
+{
+    small = 152,
+
+    large = 352
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\SpotifyItemSize.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\SpotifyItemType.cs
+
+namespace Karus.Domain.Enums;
+
+/// <summary>
+/// Represents the type of a Spotify item. 
+/// Shows (podcasts), playlists and tracks are the only types of items that can be embedded.
+/// This enum is case sensitive because it is used to build the URI of the item.
+/// </summary>
+public enum SpotifyItemType
+{
+    playlist,
+
+    show,
+
+    track
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Enums\SpotifyItemType.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\JsonConverters\PhotoTypeJsonConverter.cs
+
+using Karus.Domain.Enums;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace Karus.Domain.JsonConverters;
+
+public class PhotoTypeJsonConverter : JsonConverter<PhotoType>
+{
+    public override PhotoType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        var value = reader.GetString()!.ToLowerInvariant();
+
+        return value switch
+        {
+            "caring" => PhotoType.Caring,
+            "happy" => PhotoType.Happy,
+            "sad" => PhotoType.Sad,
+            _ => throw new JsonException($"Invalid value for PhotoType: {value}")
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, PhotoType value, JsonSerializerOptions options)
+    {
+        var stringValue = value switch
+        {
+            PhotoType.Caring => "caring",
+            PhotoType.Happy => "happy",
+            PhotoType.Sad => "sad",
+            _ => throw new JsonException($"Invalid SpotifyItemSize: {value}")
+        };
+
+        writer.WriteStringValue(stringValue);
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\JsonConverters\PhotoTypeJsonConverter.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\JsonConverters\SpotifyItemTypeJsonConverter.cs
+
+using Karus.Domain.Enums;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+
+namespace Karus.Domain.JsonConverters;
+
+public class SpotifyItemTypeJsonConverter : JsonConverter<SpotifyItemType>
+{
+    public override SpotifyItemType Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options)
+    {
+        var value = reader.GetString()!.ToLowerInvariant();
+
+        return value switch
+        {
+            "playlist" => SpotifyItemType.playlist,
+            "show" => SpotifyItemType.show,
+            "track" => SpotifyItemType.track,
+            _ => throw new JsonException($"Invalid value for SpotifyItemType: {value}")
+        };
+    }
+
+    public override void Write(Utf8JsonWriter writer, SpotifyItemType value, JsonSerializerOptions options)
+    {
+        var stringValue = value switch
+        {
+            SpotifyItemType.playlist => "playlist",
+            SpotifyItemType.show => "show",
+            SpotifyItemType.track => "track",
+            _ => throw new JsonException($"Invalid SpotifyItemType: {value}")
+        };
+
+        writer.WriteStringValue(stringValue);
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\JsonConverters\SpotifyItemTypeJsonConverter.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\BalansItem.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class BalansItem : BaseModel<Guid>
+{
+
+    public string Title { get; set; }
+
+    public string CssClass { get; set; }
+
+    public List<string> ShortTermValues { get; set; }
+
+    public List<string> LongTermValues { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\BalansItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\BaseModel.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public abstract class BaseModel<TId>
+{
+    public TId Id { get; set; }
+
+    public int SortNumber { get; set; } = 100;
+
+    public bool IsInVisible { get; set; } = false;
+
+    public DateTime Added { get; set; } = DateTime.UtcNow;
+
+    public DateTime? Modified { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\BaseModel.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\EmergencyContact.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class EmergencyContact : BaseModel<Guid>
+{
+    public string Name { get; set; }
+
+    public string PhoneNumber { get; set; }
+
+    public string ImageFilename { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\EmergencyContact.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\HaltItem.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class HaltItem : BaseModel<Guid>
+{
+    public string Name { get; set; }
+
+    public string ImageFilename { get; set; }
+
+    public string Description { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\HaltItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\NewsItem.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class NewsItem : BaseModel<Guid>
+{
+    /// <summary>
+    /// A small summary of the news item, preferably then heading of the news.
+    /// </summary>
+    public string Title { get; set; }
+
+    /// <summary>
+    /// Image size has to be 360 x 720 pixels. Use
+    /// developer tools to get the right size.
+    /// </summary>
+    public string ImageFilename { get; set; }
+
+    /// <summary>
+    /// The uri to navigate to when the item is clicked.
+    /// </summary>
+    public string Uri { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\NewsItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\OpdrachtItem.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class OpdrachtItem : BaseModel<Guid>
+{
+    public string Name { get; set; }
+
+    public string CardImageFilename { get; set; }
+
+    public string NavigationUri { get; set; }
+
+    public string Description { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\OpdrachtItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\Photo.cs
+
+using Karus.Domain.Enums;
+using Karus.Domain.JsonConverters;
+using System.Text.Json.Serialization;
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class Photo : BaseModel<Guid>
+{
+    public string FileName { get; set; }
+
+    [JsonConverter(typeof(PhotoTypeJsonConverter))]
+    public PhotoType Type { get; set; }
+
+    public string Description { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\Photo.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\Quote.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class Quote : BaseModel<Guid>
+{
+    public string Text { get; set; }
+
+    public string Author { get; set; }
+
+    public DateOnly? QuoteDate { get; set; }
+
+    public int? QuoteYear { get; set; }
+
+    public string Location { get; set; }
+
+    public string Category { get; set; }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\Quote.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\SpotifyItem.cs
+
+using Karus.Domain.Enums;
+using Karus.Domain.JsonConverters;
+using System.Text.Json.Serialization;
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class SpotifyItem : BaseModel<SpotifyItem>
+{
+    public int Id { get; set; }
+
+    public string Name { get; set; }
+
+    public string Uri { get; set; }
+
+
+    [JsonConverter(typeof(SpotifyItemTypeJsonConverter))]
+    public SpotifyItemType Type { get; set; }
+}
+
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\SpotifyItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\WaardenboomItem.cs
+
+namespace Karus.Domain.Models;
+
+#nullable disable
+
+public class WaardenboomItem : BaseModel<Guid>
+{
+    public string Name { get; set; }
+
+    public string Content { get; set; }
+
+    public int X { get; set; } = 0;
+
+    public int Y { get; set; } = 0;
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Domain\Models\WaardenboomItem.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Configuration\DependencyInjection.cs
+
+using Karus.Application.Configuration;
+using Karus.Application.Contracts;
+using Karus.Data.AzureStorageTables.Configuration;
+using Karus.Infrastucture.Services;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
+
+namespace Karus.Infrastucture.Configuration;
+
+public static class DependencyInjection
+{
+    public static IServiceCollection AddKarusInstrastructureServices(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.AddKarusOptions(configuration);
+
+        services.AddScoped<IFileReader, FileReader>();
+        services.AddScoped<IOpdrachtItemsService, OpdrachtItemsService>();
+
+        var azureOptions = services.BuildServiceProvider().GetRequiredService<IOptions<AzureOptions>>().Value;
+        string storageConnectionString = azureOptions.Storage.ConnectionString;
+
+        return services;
+    }
+
+
+    #region Helpers
+
+    private static IServiceCollection AddKarusOptions(this IServiceCollection services, IConfiguration configuration)
+    {
+        services.Configure<AzureOptions>(
+            configuration.GetSection(AzureOptions.SectionName));
+
+        return services;
+    }
+
+    #endregion "Helpers"
+}
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Configuration\DependencyInjection.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Mappers\ModelToDtoMappers.cs
+
+using Karus.Application.Dtos;
+using Karus.Domain.Models;
+
+namespace Karus.Infrastucture.Mappers;
+
+public static class ModelToDtoMappers
+{
+    public static OpdrachtItemDto ToOpdrachtItem(this OpdrachtItem opdrachtItem)
+    {
+        return new OpdrachtItemDto
+        {
+            Name = opdrachtItem.Name,
+            CardImageFilename = opdrachtItem.CardImageFilename,
+            NavigationUri = opdrachtItem.NavigationUri,
+            Description = opdrachtItem.Description
+        };
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Mappers\ModelToDtoMappers.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Services\FileReader.cs
+
+using Karus.Application.Contracts;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Logging;
+
+namespace Karus.Infrastucture.Services;
+
+public class FileReader : IFileReader
+{
+    private ILogger<FileReader> _logger;
+    private readonly IWebHostEnvironment _environment;
+
+    public FileReader(
+        ILogger<FileReader> logger,
+        IWebHostEnvironment environment)
+    {
+        _logger = logger;
+        _environment = environment;
+    }
+
+    public async Task<string?> ReadWebroothPathFileAsync(params string[] pathSegments)
+    {
+        var basePath = Path.Combine(_environment.WebRootPath, "data");
+        var filePath = Path.Combine(pathSegments);
+        var fullPath = Path.Combine(basePath, filePath);
+
+        if (File.Exists(fullPath))
+        {
+            return await File.ReadAllTextAsync(fullPath);
+        }
+        else
+        {
+            _logger.LogWarning("File not found: {File}", fullPath);
+
+            return null;
+        }
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Services\FileReader.cs
+
+*** Begin file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Services\OpdrachtItemsService.cs
+
+using Karus.Application.Contracts;
+using Karus.Application.Dtos;
+using Karus.Domain.Models;
+using Karus.Infrastucture.Mappers;
+using Microsoft.Extensions.Logging;
+using System.Text.Json;
+
+namespace Karus.Infrastucture.Services;
+
+public class OpdrachtItemsService : IOpdrachtItemsService
+{
+    private readonly ILogger<OpdrachtItemsService> _logger;
+    private readonly IFileReader _fileReader;
+
+
+    public OpdrachtItemsService(
+        ILogger<OpdrachtItemsService> logger,
+        IFileReader fileReader)
+    {
+        _logger = logger;
+        _fileReader = fileReader;
+    }
+
+
+    public async Task<List<OpdrachtItemDto>> GetOprachtItemsAsync()
+    {
+        var opdrachtItems = new List<OpdrachtItem>();
+        var jsonData = await _fileReader.ReadWebroothPathFileAsync("opdrachten", "items.json");
+
+        if (string.IsNullOrEmpty(jsonData))
+        {
+            return [];
+        }
+
+        opdrachtItems = JsonSerializer.Deserialize<List<OpdrachtItem>>(jsonData!, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+
+        if (opdrachtItems == null)
+        {
+            _logger.LogWarning("Failed to deserialize opdrachtItems.");
+            return [];
+        }
+
+        return opdrachtItems.Select(opdrachtItem => opdrachtItem.ToOpdrachtItem()).ToList();
+
+    }
+}
+
+*** End file: C:\Users\EricJansen\source\repos\Ekzakt\Eric.Jansen.Karus\Karus.Infrastucture\Services\OpdrachtItemsService.cs
+

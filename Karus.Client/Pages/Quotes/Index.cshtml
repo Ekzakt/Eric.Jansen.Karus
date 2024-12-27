@@ -1,0 +1,180 @@
+﻿@page
+@model QuotesPageModel
+@{
+    ViewData["Title"] = "Quotes";
+}
+
+<div class="d-flex justify-content-between mb-5">
+    <button type="button" class="btn-icon btn-icon-back align-self-center">
+        <i class="bi bi-caret-left"></i>
+    </button>
+    <h1>Quotes</h1>
+    <button type="button" class="btn-icon align-self-center" data-bs-toggle="modal" data-bs-target="#editQuoteModal">
+        <i class="bi bi-plus-lg"></i>
+    </button>
+</div>
+
+<table>
+    <thead>
+        <tr>
+            <th>Text</th>
+            <th>Author</th>
+            <th>Category</th>
+            <th>Year</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var quote in Model.Quotes ?? [])
+        {
+            <tr>
+                <td>@quote.Text</td>
+                <td>@quote.Author</td>
+                <td>@quote.Category</td>
+                <td>@quote.QuoteYear</td>
+                <td>
+                    <button class="btn btn-sm btn-primary edit-quote-button"
+                            data-id="@quote.Id"
+                            data-bs-toggle="modal"
+                            data-bs-target="#editQuoteModal">
+                        Edit
+                    </button>
+                    <form method="post" asp-page-handler="Delete">
+                        <input type="hidden" name="id" value="@quote.Id" />
+                        <button class="btn btn-sm btn-primary" 
+                                type="submit">
+                            Delete
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+<div class="modal modal-lg fade" id="editQuoteModal" tabindex="-1" aria-labelledby="editQuoteModalLabel" aria-hidden="false">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editQuoteModalLabel">Edit Quote</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form method="post" asp-page="/Quotes" asp-page-handler="Upsert" id="editQuoteForm">
+                    <input type="hidden" id="quoteId" name="Id" />
+                    <div class="container p-0">
+                        <div class="row">
+                            <div class="col mb-3">
+                                <label for="quoteText" class="col-form-label">Quote text:</label>
+                                <textarea class="form-control" rows="3" id="quoteText" name="Text"></textarea>
+                            </div>
+                        </div>
+                        <div class="row row-cols-1 row-cols-sm-2">
+                            <div class="col mb-3">
+                                <label for="quoteAuthor" class="col-form-label">Author:</label>
+                                <input type="text" class="form-control" list="datalistOptions" id="quoteAuthor" name="Author" />
+                                <datalist id="datalistAuthor">
+                                    <option value="San Francisco" />
+                                    <option value="New York" />
+                                    <option value="Seattle" />
+                                    <option value="Los Angeles" />
+                                    <option value="Chicago" />
+                                </datalist>
+                            </div>
+                            <div class="col mb-3">
+                                <label for="quoteLocation" class="col-form-label">Location:</label>
+                                <input type="text" class="form-control" id="quoteLocation" name="Location">
+                            </div>
+                            <div class="col mb-3">
+                                <label for="quoteCategory" class="col-form-label">Category:</label>
+                                <input type="text" class="form-control" id="quoteCategory" name="Category">
+                            </div>
+                            <div class="col mb-3">
+                                <label for="quoteYear" class="col-form-label">Year:</label>
+                                <input type="text" class="form-control" id="quoteYear" name="QuoteYear">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sluiten</button>
+                <button type="button" class="btn btn-primary" id="saveQuoteButton">Opslaan</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        const editButtons = document.querySelectorAll('.edit-quote-button');
+        const editQuoteModal = document.getElementById('editQuoteModal');
+        const editQuoteForm = document.getElementById('editQuoteForm');
+
+        if (!editQuoteModal || !editQuoteForm) {
+            return;
+        }
+
+        editQuoteModal.addEventListener('show.bs.modal', function (e) {
+            clearForm(editQuoteForm);
+        });
+
+        editButtons.forEach(button => {
+
+            button.addEventListener('click', async function () {
+
+                const quoteId = button.getAttribute('data-id');
+                const response = await fetch(`/Quotes/Index?handler=Quote&id=${quoteId}`);
+
+                if (!response.ok) {
+
+                    console.error(`Failed to load quote details: ${response.status}`);
+                    const errorText = await response.text();
+                    console.error(errorText);
+                    return;
+                }
+
+                const quote = await response.json();
+
+                document.getElementById('quoteId').value = quote.id;
+                document.getElementById('quoteText').value = quote.text;
+                document.getElementById('quoteAuthor').value = quote.author;
+                document.getElementById('quoteCategory').value = quote.category;
+                document.getElementById('quoteYear').value = quote.quoteYear;
+            });
+        });
+
+        // Handle save button click
+        document.getElementById('saveQuoteButton').addEventListener('click', async function () {
+
+            const form = document.getElementById('editQuoteForm');
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/Quotes?handler=Upsert', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    console.error('Failed to save quote');
+                }
+            } catch (error) {
+                console.error('Error saving quote:', error);
+            }
+
+        });
+
+
+        function clearForm(formEl) {
+            if (formEl) {
+                formEl.reset();
+            }
+        }
+    });
+
+</script>

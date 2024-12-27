@@ -1,22 +1,6 @@
 ﻿@import "karus-variables.scss";
+@import "karus-buttons.scss";
 @import "karus-layout.scss";
-
-.btn-primary {
-    --bs-btn-color: #fff;
-    --bs-btn-bg: var(--ks-r-color);
-    --bs-btn-border-color: #d64410;
-    --bs-btn-hover-color: #fff;
-    --bs-btn-hover-bg: #b1360d;
-    --bs-btn-hover-border-color: #a6300b;
-    --bs-btn-focus-shadow-rgb: 214, 68, 16;
-    --bs-btn-active-color: #fff;
-    --bs-btn-active-bg: #a6300b;
-    --bs-btn-active-border-color: #942c0a;
-    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
-    --bs-btn-disabled-color: #fff;
-    --bs-btn-disabled-bg: #d64410;
-    --bs-btn-disabled-border-color: #d64410;
-}
 
 .ks-k-color {
     color: $ks-k-color
@@ -49,7 +33,7 @@ li {
 h1 {
     text-align: center;
     font-weight: lighter;
-    margin-bottom: 4rem;
+    margin-bottom: 0rem;
 
     &:has(+ p) {
         margin-bottom: 0rem;
@@ -105,6 +89,15 @@ h6 {
         display: flex;
         flex-shrink: 0;
         justify-content: space-between;
+    }
+}
+
+.form-control {
+    background-color: #a5a5a5;
+    border: none;
+
+    &:active, &:focus {
+        background-color: #a5a5a5;
     }
 }
 

@@ -2,37 +2,43 @@
   {
     "CardImageFilename": "card-crisisbox.svg",
     "Name": "Crisisbox",
-    "NavigationUri": "Crisisbox",
+    "NavigationUri": "crisisbox",
     "Description": "Mijn toolkit voor het managen van cravings en herval"
   },
   {
     "CardImageFilename": "card-waardenboom.svg",
     "Name": "Waardenboom",
-    "NavigationUri": "Waardenboom",
+    "NavigationUri": "waardenboom",
     "Description": "Mijn zeven levenswaarden"
   },
   {
     "CardImageFilename": "card-balans.svg",
     "Name": "Balans",
-    "NavigationUri": "Balans",
+    "NavigationUri": "balans",
     "Description": "De voor- en nadelen van mijn alcoholgebruik"
   },
   {
     "CardImageFilename": "card-cirkelvanverandering.svg",
     "Name": "Cirkel van Verandering",
-    "NavigationUri": "CirkelVanVerandering",
+    "NavigationUri": "cirkel-van-verandering",
     "Description": "Het cirkelmodel van de stadia van persoonlijke verandering."
   },
   {
     "CardImageFilename": "card-demuur.svg",
     "Name": "De Muur",
-    "NavigationUri": "Muur",
+    "NavigationUri": "muur",
     "Description": ""
   },
   {
     "CardImageFilename": "card-flitskaart.svg",
     "Name": "Flitskaart",
-    "NavigationUri": "Flitskaart",
+    "NavigationUri": "flitskaart",
     "Description": "Verbreed je perspectief in een flits!"
+  },
+  {
+    "CardImageFilename": "",
+    "Name": "Quotes",
+    "NavigationUri": "quotes",
+    "Description": "Inspirational Quotes!"
   }
 ]
