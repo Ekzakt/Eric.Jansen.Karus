@@ -4,13 +4,15 @@
     ViewData["Title"] = "Quotes";
 }
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editQuoteModal">
-        Quote Toevoegen
+<div class="d-flex justify-content-between mb-5">
+    <button type="button" class="btn-icon btn-icon-back align-self-center">
+        <i class="bi bi-caret-left"></i>
     </button>
-    <h1 class="bg-warning">Quotes</h1>
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editQuoteModal">
-        Quote Toevoegen
+    <h1>Quotes</h1>
+    <button type="button" class="btn-icon align-self-center" data-bs-toggle="modal" data-bs-target="#editQuoteModal">
+        <i class="bi bi-plus-lg"></i>
     </button>
+</div>
 
 <table>
     <thead>
@@ -97,8 +99,8 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" id="saveQuoteButton">Save changes</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Sluiten</button>
+                <button type="button" class="btn btn-primary" id="saveQuoteButton">Opslaan</button>
             </div>
         </div>
     </div>
