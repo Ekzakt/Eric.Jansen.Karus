@@ -2,5 +2,9 @@
   {
     "outputFile": "wwwroot/css/karus.css",
     "inputFile": "wwwroot/css/karus.scss"
+  },
+  {
+    "outputFile": "wwwroot/js/karus.min.js",
+    "inputFile": "wwwroot/js/karus.js"
   }
 ]
