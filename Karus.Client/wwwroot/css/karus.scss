@@ -30,21 +30,24 @@ li {
     line-height: 1.8rem;
 }
 
-h1 {
-    text-align: center;
-    font-weight: lighter;
-    margin-bottom: 0rem;
+.page-title {
+    margin: 3rem 0 3.85rem 0;
 
-    &:has(+ p) {
-        margin-bottom: 0rem;
-    }
-
-    & + p {
-        margin-bottom: 4rem;
+    h1 {
+        margin: 0;
+        padding: 0;
         text-align: center;
-        font-size: smaller;
+        font-weight: lighter;
+
+        & + p {
+            margin: 0;
+            line-height: 1rem;
+            text-align: center;
+            font-size: small;
+        }
     }
 }
+
 
 h2 {
     font-weight: lighter;
@@ -292,11 +295,51 @@ h6 {
     }
 }
 
+/*--------------------------------------------------------------
+# QUOTES
+--------------------------------------------------------------*/
+.karus_quotes {
+    .quote {
+
+        &:hover .btn-icon-edit {
+            display: block;
+        }
+
+        .quote-text::before {
+            content: "\f6b0";
+            font-family: "bootstrap-icons";
+            font-size: 1.6rem;
+            margin-left: -1.6rem;
+            color: $ks-r-color;
+            display: inline-block;
+            opacity: 0.25;
+        }
+
+        .btn-icon-edit {
+            display: none;
+            position: absolute;
+            z-index: 10;
+            top: 1px;
+            right: 1px;
+        }
+
+        .quote-text {
+            font-size: larger;
+        }
+
+        .quote-signature {
+            line-height: 3rem;
+            position: relative;
+            font-size: smaller;
+            font-style: italic;
+        }
+    }
+}
 
 /*--------------------------------------------------------------
 # CRISISBOX QUOTES
 --------------------------------------------------------------*/
-.karus_quotes {
+.karus_crisisbox_quotes {
 
     ul {
         list-style-type: none;

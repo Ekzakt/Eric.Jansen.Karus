@@ -33,7 +33,7 @@
   border-radius: 50%;
   width: 40px;
   height: 40px;
-  font-size: 1.5rem;
+  font-size: 1.1rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -70,9 +70,11 @@ body {
 }
 
 .header {
+  padding-top: 2rem;
   text-align: center;
 }
 .header p.by {
+  margin: 0;
   font-weight: lighter;
   font-size: smaller;
 }
@@ -122,18 +124,20 @@ li {
   line-height: 1.8rem;
 }
 
-h1 {
+.page-title {
+  margin: 3rem 0 3.85rem 0;
+}
+.page-title h1 {
+  margin: 0;
+  padding: 0;
   text-align: center;
   font-weight: lighter;
-  margin-bottom: 0rem;
 }
-h1:has(+ p) {
-  margin-bottom: 0rem;
-}
-h1 + p {
-  margin-bottom: 4rem;
+.page-title h1 + p {
+  margin: 0;
+  line-height: 1rem;
   text-align: center;
-  font-size: smaller;
+  font-size: small;
 }
 
 h2 {
@@ -322,33 +326,65 @@ h6 {
 }
 
 /*--------------------------------------------------------------
+# QUOTES
+--------------------------------------------------------------*/
+.karus_quotes .quote:hover .btn-icon-edit {
+  display: block;
+}
+.karus_quotes .quote .quote-text::before {
+  content: "\f6b0";
+  font-family: "bootstrap-icons";
+  font-size: 1.6rem;
+  margin-left: -1.6rem;
+  color: #d64410;
+  display: inline-block;
+  opacity: 0.25;
+}
+.karus_quotes .quote .btn-icon-edit {
+  display: none;
+  position: absolute;
+  z-index: 10;
+  top: 1px;
+  right: 1px;
+}
+.karus_quotes .quote .quote-text {
+  font-size: larger;
+}
+.karus_quotes .quote .quote-signature {
+  line-height: 3rem;
+  position: relative;
+  font-size: smaller;
+  font-style: italic;
+}
+
+/*--------------------------------------------------------------
 # CRISISBOX QUOTES
 --------------------------------------------------------------*/
-.karus_quotes ul {
+.karus_crisisbox_quotes ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
 }
-.karus_quotes ul li {
+.karus_crisisbox_quotes ul li {
   position: relative;
   padding-left: 40px;
   line-height: inherit;
   margin-bottom: 2rem;
 }
-.karus_quotes ul li .quote-text {
+.karus_crisisbox_quotes ul li .quote-text {
   font-style: italic;
 }
-.karus_quotes ul li .quote-signature {
+.karus_crisisbox_quotes ul li .quote-signature {
   display: block;
   text-align: right;
   font-size: small;
   font-style: italic;
   font-weight: bold;
 }
-.karus_quotes ul li:last-child {
+.karus_crisisbox_quotes ul li:last-child {
   margin-bottom: 0;
 }
-.karus_quotes ul li i {
+.karus_crisisbox_quotes ul li i {
   transition: transform 0.4s ease;
   color: #d64410;
   font-size: 2rem;
@@ -356,7 +392,7 @@ h6 {
   left: 0;
   top: -1rem;
 }
-.karus_quotes ul li:hover i {
+.karus_crisisbox_quotes ul li:hover i {
   transform: scale(1.3);
 }
 

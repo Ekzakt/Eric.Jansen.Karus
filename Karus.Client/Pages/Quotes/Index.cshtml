@@ -4,54 +4,38 @@
     ViewData["Title"] = "Quotes";
 }
 
-<div class="d-flex justify-content-between mb-5">
+<div class="d-flex justify-content-between page-title">
     <button type="button" class="btn-icon btn-icon-back align-self-center">
         <i class="bi bi-caret-left"></i>
     </button>
-    <h1>Quotes</h1>
+    <div class="align-self-center">
+        <h1 >Quotes</h1>
+    </div>
     <button type="button" class="btn-icon align-self-center" data-bs-toggle="modal" data-bs-target="#editQuoteModal">
         <i class="bi bi-plus-lg"></i>
     </button>
 </div>
 
-<table>
-    <thead>
-        <tr>
-            <th>Text</th>
-            <th>Author</th>
-            <th>Category</th>
-            <th>Year</th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
+<section class="container p-0 karus_quotes">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-5">
         @foreach (var quote in Model.Quotes ?? [])
         {
-            <tr>
-                <td>@quote.Text</td>
-                <td>@quote.Author</td>
-                <td>@quote.Category</td>
-                <td>@quote.QuoteYear</td>
-                <td>
-                    <button class="btn btn-sm btn-primary edit-quote-button"
+            <div class="col quote text-center">
+                
+                <div class="quote-text">@quote.Text</div>
+                <div class="quote-signature">
+                    @quote.Author
+                    <button type="button" class="btn-icon btn-icon-edit align-self-center"
                             data-id="@quote.Id"
                             data-bs-toggle="modal"
                             data-bs-target="#editQuoteModal">
-                        Edit
+                        <i class="bi bi-pencil"></i>
                     </button>
-                    <form method="post" asp-page-handler="Delete">
-                        <input type="hidden" name="id" value="@quote.Id" />
-                        <button class="btn btn-sm btn-primary" 
-                                type="submit">
-                            Delete
-                        </button>
-                    </form>
-                </td>
-            </tr>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
-
+    </div>
+</section>
 
 <div class="modal modal-lg fade" id="editQuoteModal" tabindex="-1" aria-labelledby="editQuoteModalLabel" aria-hidden="false">
     <div class="modal-dialog modal-dialog-centered">
@@ -109,7 +93,7 @@
 <script>
     document.addEventListener('DOMContentLoaded', function () {
 
-        const editButtons = document.querySelectorAll('.edit-quote-button');
+        const editButtons = document.querySelectorAll('.btn-icon-edit');
         const editQuoteModal = document.getElementById('editQuoteModal');
         const editQuoteForm = document.getElementById('editQuoteForm');
 
